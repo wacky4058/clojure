@@ -57,6 +57,18 @@ apply +
 (fn [x]
   (= (seq x) (reverse (seq x))))
 
+
+;; 28
+;; Write a function which flattens a sequence.
+;; (= (__ '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
+;; (= (__ ["a" ["b"] "c"]) '("a" "b" "c"))
+;; (= (__ '((((:a))))) '(:a))
+(fn ff [col]
+  (reduce (fn f* [acc x]
+            (if (coll? x)
+              (reduce f* acc x)
+              (conj acc x))) []  col))
+
 ;;30
 ;;Write a function which removes consecutive duplicates from a sequence.
 ;; (= (apply str (__ "Leeeeeerrroyyy")) "Leroy")
@@ -84,6 +96,47 @@ apply +
           (conj acc s* s*))]
     (reduce f* [] s)))
 
+;;34
+;; Write a function which creates a list of all integers in a given range.
+;; (= (__ 1 4) '(1 2 3))
+;; (= (__ -2 2) '(-2 -1 0 1))
+;; (= (__ 5 8) '(5 6 7))
+(fn [a b]
+  (loop [x a acc []]
+    (if (< x b)
+      (recur (inc x)(conj acc x))
+      acc)))
+
+;;39
+;; Write a function which takes two sequences and returns the first item from each, then the second item from each, then the third, etc.
+;; (= (__ [1 2 3] [:a :b :c]) '(1 :a 2 :b 3 :c))
+;; (= (__ [1 2] [3 4 5 6]) '(1 3 2 4))
+;; (= (__ [1 2 3 4] [5]) [1 5])
+;; (= (__ [30 20] [25 15]) [30 25 20 15])
+
+(fn [col1 col2]
+  (let [count1 (count col1)
+        count2 (count col2)
+        counts (if (> count1 count2)
+                 count2
+                 count1)]
+    (loop [x 0 acc []]
+      (if (< x counts)
+        (recur (inc x) (conj acc (nth col1 x) (nth col2 x)))
+        acc))))
+
+
+
+;;42
+;; Write a function which calculates factorials.
+;; (= (__ 1) 1)
+;; (= (__ 3) 6)
+;; (= (__ 5) 120)
+;; (= (__ 8) 40320)
+(fn [s]
+  (reduce *  1 (range 1 (+ 1 s))))
+
+
 
 
 
@@ -108,8 +161,6 @@ apply +
     (if (< n (count col))
       (recur (inc n) (assoc maps (nth col n) a))
       maps)))
-
-
 
 
 
